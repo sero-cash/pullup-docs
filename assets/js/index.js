@@ -52,10 +52,10 @@ var Index = {
         var localNet = $.cookie('networkUrl');
         $('.list-group').empty();
 
-        $.getJSON("node.json", "", function(data) {　
+        $.getJSON("node.json?"+new Date().getTime(), "", function(data) {　
             $.each(data.host, function(i, net) {
                 $('.list-group').append(`<li class="list-group-item ${localNet === net.rpc ? 'active' : ''} netcheck" network="${net.rpc}" netname="${net.name}">
-                    <i class="fas fa-circle ${net.network === 'main' ? 'text-success' : 'text-warning'}"></i> ${net.rpc} ${net.name}
+                    <i class="fas fa-circle ${net.network === 'main' ? 'text-success' : 'text-warning'}"></i> ${net.name} (${net.rpc})
                 </li>`);
             })
 
@@ -69,9 +69,9 @@ var Index = {
                 <button class="btn btn-outline-primary btn-block addNetwork">Set Personal RPC</button>
             </li>`);
 
-            $('.netcheck').bind('click', function () {
+            $('.netcheck').unbind().bind('click', function () {
                 var network = $(this).attr('network');
-                // var netName = $(this).attr('netname');
+                var netName = $(this).attr('netname');
                 Common.post('network/change', network, {}, function (res) {
                     if (res.base.code === 'SUCCESS') {
                         $('.select-net span').text(network);
@@ -84,7 +84,7 @@ var Index = {
                 });
             });
 
-            $('.addNetwork').bind('click', function () {
+            $('.addNetwork').unbind().bind('click', function () {
                 var network = $('#basic-url').val();
                 // var netName = $(this).attr('netname');
                 if (network === '') {

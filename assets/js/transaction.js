@@ -118,6 +118,8 @@ var Transaction = {
                             }
                             _pkBalance[data.PK] = data;
                         }
+
+
                     }
                     that.pkBalance = _pkBalance;
                     setTimeout(function () {
@@ -137,10 +139,39 @@ var Transaction = {
         Object.keys(that.pkBalance).forEach(function(PK){
             var data = that.pkBalance[PK];
             var balanceObj = data.Balance;
+            var ticketsObj = data.Tickets;
 
             var acName = "Account"+(i + 1);
             if (data.Name){
                 acName = data.Name;
+            }
+
+            if(!$.isEmptyObject(ticketsObj) && i===0) {
+                var ticketsMap = Object.keys(ticketsObj);
+                $('.tickets').empty().append(`
+                    <div class="form-group">
+                        <label>${$.i18n.prop('send_tx_tickets')}</label>
+                        <div class="row">
+                            <div class="col-sm-12 mb-3 mb-sm-0">
+                                <select id="tickets" class="form-control" >
+                                <option value=''> -- </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                `)
+                for (var catalog of ticketsMap) {
+                    var value_arr = ticketsObj[catalog];
+                    var valueH = ``;
+                    for(var k= 0;k<value_arr.length;k++){
+                        valueH += `<option value='${catalog+'_'+k}'>${value_arr[k]}</option>`
+                    }
+                    $('#tickets').append(`
+                        <optgroup label='${catalog}'>
+                            ${valueH}
+                        </optgroup>
+                    `)
+                }
             }
 
             if(!$.isEmptyObject(balanceObj)){
@@ -168,7 +199,6 @@ var Transaction = {
                 i++;
             }
 
-
         });
 
 
@@ -184,6 +214,7 @@ var Transaction = {
 
         Common.post("account/detail", biz, {}, function (res) {
             $('.currency').empty();
+            $('.tickets').empty();
             if (res.base.code === 'SUCCESS') {
                 if (res.biz) {
                     var data = res.biz;
@@ -206,6 +237,36 @@ var Transaction = {
                                 hasSet = true;
                             }
                         }
+
+                        var ticketsObj = data.Tickets;
+                        if(!$.isEmptyObject(ticketsObj)) {
+                            var ticketsMap = Object.keys(ticketsObj);
+                            $('.tickets').empty().append(`
+                                <div class="form-group">
+                                    <label>${$.i18n.prop('send_tx_tickets')}</label>
+                                    <div class="row">
+                                        <div class="col-sm-12 mb-3 mb-sm-0">
+                                            <select id="tickets" class="form-control" >
+                                                <option value=''> -- </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            `)
+                            for (var catalog of ticketsMap) {
+                                var value_arr = ticketsObj[catalog];
+                                var valueH = '';
+                                for(var k= 0;k<value_arr.length;k++){
+                                    valueH += `<option value='${catalog+'_'+k}'>${value_arr[k]}</option>`
+                                }
+                                $('#tickets').append(`
+                                    <optgroup label='${catalog}'>
+                                        ${valueH}
+                                    </optgroup>
+                                `)
+                            }
+                        }
+
                     }
                 }
             }
@@ -271,6 +332,7 @@ var Transaction = {
             total = fee.plus(amount);
         }
 
+
         $(".modal-body ul li:eq(0) div div:eq(1)").text(from);
         $(".modal-body ul li:eq(1) div div:eq(1)").text(to);
         $(".modal-body ul li:eq(2) div div:eq(1)").text(amount.dividedBy(decimal).toFixed(that.currencyDecimalFix[currency]) + ' ' + currency);
@@ -305,6 +367,14 @@ var Transaction = {
                         Amount: amount.toString(10),
                         GasPrice: gasprice.toString(10),
                         Password:password,
+                    }
+                    var ticketCatalog = $("#tickets").find("option:selected").val();
+                    if(ticketCatalog){
+                        var ticketValue = $("#tickets").find("option:selected").text();
+                        biz.tkt={
+                            catalog:ticketCatalog.split("_")[0],
+                            value:ticketValue,
+                        }
                     }
                     Common.postAsync('tx/transfer', biz, {}, function (res) {
                         if (res.base.code === 'SUCCESS') {

@@ -186,6 +186,7 @@ var Detail = {
             PK: pk,
         }
         $('.currency').empty();
+        $('.tickets').empty();
         Common.post("account/detail", biz, {}, function (res) {
 
             if (res.base.code === "SUCCESS") {
@@ -238,6 +239,7 @@ var Detail = {
                 $('.pk').text(res.biz.PK.substring(0, 8) + " ... " + res.biz.PK.substring(res.biz.PK.length - 8));
 
                 var balanceObj = res.biz.Balance;
+                var ticketsObj = res.biz.Tickets;
 
                 var strMap = new Map();
                 for (var k of Object.keys(balanceObj)) {
@@ -272,6 +274,21 @@ var Detail = {
                         that.appendCurrency(k,new BigNumber(balanceObj[k]).dividedBy(Common.baseDecimal).toFixed(6));
                     }
                 }
+
+                if(ticketsObj){
+                    $('.tickets').empty().append(`
+                        <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                            <h3 class="text-dark mb-0">Tickets</h3>
+                        </div>
+                        <div class="row ticketp">
+                        </div>
+                    `)
+                    for (var catalog of Object.keys(ticketsObj)) {
+                        var values = ticketsObj[catalog]
+                        that.appendCatalog(catalog,values)
+                    }
+                }
+
                 if (strMap.size === 0) {
                     that.appendCurrency('SERO','0.000000');
                 }
@@ -288,6 +305,28 @@ var Detail = {
                             <div class="col mr-2">
                                 <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>${k}</span></div>
                                 <div class="text-dark font-weight-bold h5 mb-0"><span>${amount}</span></div>
+                            </div>
+                            <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
+    },
+
+    appendCatalog:function(catalog,values){
+        var _vp = ``;
+        for (var i=0;i<values.length;i++){
+            _vp += `<p class="small text-black">${"0x"+values[i]}</p>`;
+        }
+        $('.ticketp').append(`
+            <div class="col-md-12 col-xl-6 mb-4">
+                <div class="card shadow border-left-success py-2">
+                    <div class="card-body">
+                        <div class="row align-items-center no-gutters">
+                            <div class="col mr-2">
+                                <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>${catalog}</span></div>
+                                <div class="text-dark font-weight-bold h5 mb-0">${_vp}</div>
                             </div>
                             <div class="col-auto"><i class="fas fa-dollar-sign fa-2x text-gray-300"></i></div>
                         </div>

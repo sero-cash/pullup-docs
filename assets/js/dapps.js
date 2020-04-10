@@ -34,6 +34,9 @@ var DApps = {
                 $('.add-dapp h3').text($.i18n.prop('navbar_dapps'));
                 $('.add-dapp i').text($.i18n.prop('dapps_modal_add'));
 
+                $('.card-header:eq(0)').text($.i18n.prop('dapps_card_header_gov'));
+                $('.card-header:eq(1)').text($.i18n.prop('dapps_card_header_voted'));
+
                 $('#addDappModal .modal-footer button:eq(0)').text($.i18n.prop('dapp_token_modal_button_cancel'));
                 $('#addDappModal .modal-footer button:eq(1)').text($.i18n.prop('dapps_modal_add'));
                 $('#addDappModal .modal-title').text($.i18n.prop('dapps_modal_add'));
@@ -43,7 +46,7 @@ var DApps = {
         this.genPageData();
     },
 
-    dapps_en_US: [
+    dapp_en_gov:[
         {
             img: "./assets/img/token.png",
             title: "SRC20 Token Tracker",
@@ -54,6 +57,18 @@ var DApps = {
             state: 1,
         },
         {
+            "img": "https://sero-cash.github.io/voter/vote.jpg",
+            "title": "Vote",
+            "desc": "Support or Oppose, Who can win?",
+            "author": "nobody",
+            "url": "https://sero-cash.github.io/voter/v1/",
+            showTips: false,
+            "state": 1
+        },
+    ],
+
+    dapps_en_US: [
+        {
             img: "./assets/img/asnow.jpeg",
             title: "ASNOW",
             desc: "",
@@ -61,15 +76,6 @@ var DApps = {
             url: "http://asnowhero.gitee.io/asnow-pullup/",
             showTips: true,
             state: 1,
-        },
-        {
-            "img": "https://sero-cash.github.io/voter/vote.jpg",
-            "title": "Vote",
-            "desc": "Support or Oppose, Who can win?",
-            "author": "nobody",
-            "url": "https://sero-cash.github.io/voter/v1/",
-            showTips: true,
-            "state": 1
         },
         {
             "img": "http://osaifu.io:3000/logo.png",
@@ -118,7 +124,8 @@ var DApps = {
             state: 1,
         }
     ],
-    dapps_zh_CN: [
+
+    dapp_zh_gov:[
         {
             img: "./assets/img/token.png",
             title: "SRC20 Token Tracker",
@@ -129,6 +136,19 @@ var DApps = {
             state: 1,
         },
         {
+            "img": "http://sero-cash.gitee.io/voter/vote.jpg",
+            "title": "Vote",
+            "desc": "Support or Oppose, Who can win?",
+            "author": "nobody",
+            "url": "http://sero-cash.gitee.io/voter/v1/",
+            showTips: false,
+            "state": 1
+        },
+    ],
+
+    dapps_zh_CN: [
+
+        {
             img: "./assets/img/asnow.jpeg",
             title: "ASNOW",
             desc: "",
@@ -136,14 +156,6 @@ var DApps = {
             url: "http://asnowhero.gitee.io/asnow-pullup/",
             showTips: true,
             state: 1,
-        },{
-            "img": "http://sero-cash.gitee.io/voter/vote.jpg",
-            "title": "Vote",
-            "desc": "Support or Oppose, Who can win?",
-            "author": "nobody",
-            "url": "http://sero-cash.gitee.io/voter/v1/",
-            showTips: true,
-            "state": 1
         },
         {
             "img": "http://osaifu.io:3000/logo.png",
@@ -249,21 +261,47 @@ var DApps = {
             $.cookie('language', lang);
         }
         var data = [];
-        if (lang === "zh_CN") {
+        var gov = [];
+        let localUtc = new Date().getTimezoneOffset() / 60;
+
+        if(localUtc === -8){
             data = that.dapps_zh_CN;
-        } else if (lang === "en_US") {
+            gov = that.dapp_zh_gov;
+        }else{
             data = that.dapps_en_US
+            gov = that.dapp_en_gov;
+        }
+        $(".dapp-data").empty();
+        $(".dapp-gov").empty();
+
+        for (var i = 0; i < gov.length; i++) {
+            var dapp = gov[i];
+            $('.dapp-gov').append(`
+                <div class="col-lg-2 col-md-3 col-sm-6" style="padding-bottom:15px;">
+                    <div class="card shadow">
+                        <img src="${dapp.img}"style="max-height:190px" class="card-img-top">
+                        <div class="card-body" style="height:130px;overflow-y: scroll;">
+                            <h6 class="card-title text-dark">${dapp.title}</h6>
+                            <p class="card-text">${dapp.desc}</p>
+                        </div>
+                        <div class="card-footer text-right">
+                            <a href="${dapp.showTips ? "#" : dapp.url}" class="btn btn-sm btn-primary dapp-btn text-uppercase" dapp-name="${dapp.title}" dapp-url="${dapp.url}">${$.i18n.prop('dapps_button_enter')}</a>
+                        </div>
+                    </div>
+                </div>
+            `);
         }
 
-        $(".dapp-data").empty();
+
+
         for (var i = 0; i < data.length; i++) {
             var dapp = data[i];
             if (dapp.state === 1) {
                 $('.dapp-data').append(`
-                    <div class="col-lg-3 col-md-4 col-sm-6" style="padding-bottom:15px;">
+                    <div class="col-lg-2 col-md-3 col-sm-6" style="padding-bottom:15px;">
                         <div class="card shadow">
-                            <img src="${dapp.img}" with="390" style="max-height:280px" class="card-img-top">
-                            <div class="card-body" style="height:130px;">
+                            <img src="${dapp.img}"  style="max-height:190px" class="card-img-top">
+                            <div class="card-body" style="height:130px;overflow-y: scroll;">
                                 <h6 class="card-title text-dark">${dapp.title}</h6>
                                 <p class="card-text">${dapp.desc}</p>
                             </div>
@@ -275,10 +313,10 @@ var DApps = {
                 `);
             } else if (dapp.state === 0) {
                 $('.dapp-data').append(`
-                    <div class="col-lg-3 col-md-4 col-sm-6" style="padding-bottom:15px;">
+                    <div class="col-lg-2 col-md-3 col-sm-6" style="padding-bottom:15px;">
                         <div class="card shadow">
-                            <img src="${dapp.img}" with="390" style="max-height:280px"  class="card-img-top">
-                            <div class="card-body" style="height:130px;">
+                            <img src="${dapp.img}"  style="max-height:190px"  class="card-img-top">
+                            <div class="card-body" style="height:130px;overflow-y: scroll;">
                                 <h6 class="card-title text-dark">${dapp.title}</h6>
                                 <p class="card-text">${dapp.desc}</p>
                             </div>
@@ -300,10 +338,10 @@ var DApps = {
                 for (var i = 0; i < dapps.length; i++) {
                     var dapp = dapps[i];
                     $('.dapp-data').append(`
-                    <div class="col-lg-3 col-md-4 col-sm-6" style="padding-bottom:15px;">
+                    <div class="col-lg-2 col-md-3 col-sm-6" style="padding-bottom:15px;">
                         <div class="card shadow" >
-                            <img src="${dapp.img}" with="390" style="max-height:280px"  class="card-img-top">
-                            <div class="card-body" style="height:130px;">
+                            <img src="${dapp.img}"  style="max-height:190px"  class="card-img-top">
+                            <div class="card-body" style="height:130px;overflow-y: scroll;">
                                 <h6 class="card-title text-dark">${dapp.title}</h6>
                                 <p class="card-text">${dapp.desc}</p>
                             </div>
@@ -321,7 +359,7 @@ var DApps = {
         $('.dapp-btn').bind('click', function () {
             var dappName = $(this).attr('dapp-name');
             var dappUrl = $(this).attr('dapp-url');
-            var bodyp = $('.modal-body p').text();
+            var bodyp = $.i18n.prop('dapps_modal_body');
             $('#myModal p').text(bodyp.replace(/GGGGG/g, dappName));
 
             $('.dapp-name').text(dappName);
