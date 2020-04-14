@@ -216,6 +216,14 @@ var Token = {
         "payable": false,
         "stateMutability": "view",
         "type": "function"
+    },{
+        "constant": true,
+        "inputs": [],
+        "name": "getDecimal",
+        "outputs": [{"name": "", "type": "uint8"}],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
     }, {
         "constant": false,
         "inputs": [{"name": "_to", "type": "address"}, {"name": "_cy", "type": "string"}],
@@ -252,6 +260,14 @@ var Token = {
         "constant": true,
         "inputs": [],
         "name": "symbol",
+        "outputs": [{"name": "", "type": "string"}],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    }, {
+        "constant": true,
+        "inputs": [],
+        "name": "currency",
         "outputs": [{"name": "", "type": "string"}],
         "payable": false,
         "stateMutability": "view",
@@ -466,52 +482,56 @@ var Token = {
 
                 for (let token of tokens) {
                     if (token.ContractAddress) {
+                        $('tbody').append(`
+                            <tr id='${token.ContractAddress}'>
+                            <td class="text-break">${token.ContractAddress}</td>
+                            <td>${token.Name}</td>
+                            <td>${token.Symbol}</td>
+                            <td>${token.Decimal}</td>
+                            <td>${new BigNumber(token.Total, 16).toFixed(0)}</td>
+                            <td></td>
+                            <td></td>
+                            
+                            </tr>
+                        `);
+                        // <td><button class="btn btn-outline-info" onclick="showTokenModal(${"'" + token.ContractAddress + "'," + token.Decimal})">Transfer</button></td>
+                    }
+                }
+
+                for (let token of tokens) {
+                    if (token.ContractAddress) {
                         that.execute(token.ContractAddress, 'balanceOf', [], function (res) {
                             if (res.result) {
                                 var tokenBlance = res.result;
-                                Common.postSeroRpc("sero_getBalance",[token.ContractAddress,"latest"],function (res) {
-                                    var seroS=0;
-                                    if(res.result.tkn){
-                                        seroS=res.result.tkn["SERO"];
-                                    }
-                                    $('tbody').append(`
-                                        <tr>
-                                        <td class="text-break">${token.ContractAddress}</td>
-                                        <td>${token.Name}</td>
-                                        <td>${token.Symbol}</td>
-                                        <td>${token.Decimal}</td>
-                                        <td>${new BigNumber(token.Total, 16).toFixed(0)}</td>
-                                        <td>${new BigNumber(tokenBlance).dividedBy(new BigNumber(10).pow(parseInt(token.Decimal))).toFixed(6)}</td>
-                                        <td>${new BigNumber(seroS,16).dividedBy(Common.baseDecimal).toFixed(6)}</td>
-                                        <td><button class="btn btn-outline-info" onclick="showTokenModal(${"'" + token.ContractAddress + "'," + token.Decimal})">Transfer</button></td>
-                                        </tr>
-                                    `);
-                                })
-
-
-                            }else {
-                                Common.postSeroRpc("sero_getBalance",[token.ContractAddress,"latest"],function (res) {
-                                    var seroS=0;
-                                    if(res.result.tkn){
-                                        seroS=res.result.tkn["SERO"];
-                                    }
-                                    $('tbody').append(`
-                                        <tr>
-                                        <td class="text-break">${token.ContractAddress}</td>
-                                        <td>${token.Name}</td>
-                                        <td>${token.Symbol}</td>
-                                        <td>${token.Decimal}</td>
-                                        <td>${new BigNumber(token.Total, 16).toFixed(0)}</td>
-                                        <td>0.000000</td>
-                                        <td>${new BigNumber(seroS,16).dividedBy(Common.baseDecimal).toFixed(6)}</td>
-                                        <td></td>
-                                        </tr>
-                                    `);
-                                })
+                                $(`#${token.ContractAddress} td:eq(5)`).text(
+                                    `${new BigNumber(tokenBlance).dividedBy(new BigNumber(10).pow(parseInt(token.Decimal))).toFixed(6)}`
+                                )
                             }
                         });
 
+                        $(`#${token.ContractAddress} td:eq(6)`).empty();
+                        Common.postSeroRpcSync("sero_getBalance",[token.ContractAddress,"latest"],function (res) {
+                            var balanceObj = res.result.tkn;
+                            for (var cy of Object.keys(balanceObj)) {
+                                console.log(cy,balanceObj[cy]);
+                                if(cy === 'SERO'){
+                                    $(`#${token.ContractAddress} td:eq(6)`).append(
+                                        `<div>${new BigNumber(balanceObj[cy],16).dividedBy(Common.baseDecimal).toString(10)} SERO</div>`
+                                    )
+                                }else{
+                                    Common.postSeroRpcSync("sero_getDecimal",[cy],function (res) {
+                                        console.log("res.result>> ",res.result);
+                                        if(res.result){
+                                            var tkDecimal = new BigNumber(10).pow(new BigNumber(res.result,16));
+                                            $(`#${token.ContractAddress} td:eq(6)`).append(
+                                                ` <div>${new BigNumber(balanceObj[cy],16).dividedBy(tkDecimal).toString(10)} ${cy}</div>`
+                                            )
+                                        }
+                                    })
+                                }
+                            }
 
+                        })
                     }
                 }
             }
@@ -663,28 +683,10 @@ var Token = {
 
 
             that.execute(_contractAddress, 'decimals', [], function (res) {
-                if (res.result) {
+                if (res.result && res.result!="0x") {
                     var decimal = new BigNumber(10).pow(new BigNumber(res.result, 10));
                     that.t_decimals = new BigNumber(res.result, 10);
                     $('.w_t_decimal').text(new BigNumber(res.result, 10).toString(10));
-                    that.execute(_contractAddress, 'symbol', [], function (res) {
-                        if (res.result) {
-                            $('.w_t_symbol').text(res.result);
-                            that.t_symbol = res.result;
-                        } else {
-                            that.isToken = false;
-                        }
-                    });
-
-                    that.execute(_contractAddress, 'name', [], function (res) {
-                        if (res.result) {
-                            $('.w_t_name').text(res.result);
-                            that.t_name = res.result;
-                        } else {
-                            that.isToken = false;
-                        }
-                    });
-
                     that.execute(_contractAddress, 'totalSupply', [], function (res) {
                         if (res.result) {
                             console.log("res totalSupply: ",res);
@@ -703,25 +705,83 @@ var Token = {
                             that.isToken = false;
                         }
                     });
-
                 } else {
-                    Common.postSeroRpc("sero_getBalance",[_contractAddress,"latest"],function (res) {
-                        var seroS=0;
-                        if(res.result.tkn){
-                            seroS=res.result.tkn["SERO"];
+                    that.execute(_contractAddress, 'getDecimal', [], function (res) {
+                        if (res.result) {
+                            var decimal = new BigNumber(10).pow(new BigNumber(res.result, 10));
+                            that.t_decimals = new BigNumber(res.result, 10);
+                            $('.w_t_decimal').text(new BigNumber(res.result, 10).toString(10));
+                            that.execute(_contractAddress, 'totalSupply', [], function (res) {
+                                if (res.result) {
+                                    console.log("res totalSupply: ", res);
+                                    $('.w_t_total').text(new BigNumber(res.result, 10).dividedBy(decimal).toFixed(6));
+                                    that.t_total = "0x" + new BigNumber(res.result, 10).dividedBy(decimal).toString(16);
+                                } else {
+                                    that.isToken = false;
+                                }
+                            });
+
+                            that.execute(_contractAddress, 'balanceOf', [], function (res) {
+                                if (res.result) {
+                                    $('.w_t_balance').text(new BigNumber(res.result, 10).dividedBy(decimal).toFixed(6));
+
+                                } else {
+                                    that.isToken = false;
+                                }
+                            });
+                        }else{
+                            Common.postSeroRpc("sero_getBalance",[_contractAddress,"latest"],function (res) {
+                                if (res.result) {
+                                    if(res.result.tkn){
+                                        var balanceObj = res.result.tkn
+                                        for (var cy of Object.keys(balanceObj)){
+                                            var value = balanceObj[cy];
+                                            Common.postSeroRpc("sero_getDecimal",[cy],function (res) {
+                                                if(res.result){
+                                                    var tkdecimals = new BigNumber(res.result,16);
+                                                    var tkvalue = new BigNumber(value,16)
+                                                    $('.account_sero').append(
+                                                        `<div>${tkvalue.dividedBy(new BigNumber(10).pow(tkdecimals)).toString(10)} ${cy}</div>`
+                                                    );
+                                                }
+                                            })
+                                        }
+                                    }
+                                }
+                            })
+                            that.isToken = false;
                         }
-
-                        that.t_name= 'None';
-                        that.t_symbol= 'None';
-                        that.t_total= 0;
-                        that.t_decimals= 0;
-
-                        $('.account_sero').text(new BigNumber(seroS,16).dividedBy(Common.baseDecimal).toFixed(6));
                     })
+                }
+            });
 
+            that.execute(_contractAddress, 'symbol', [], function (res) {
+                console.log("symbol>>>> ",res);
+                if (res.result && res.result!=='0x') {
+                    $('.w_t_symbol').text(res.result);
+                    that.t_symbol = res.result;
+                } else {
+                    that.execute(_contractAddress, 'currency', [], function (res) {
+                        console.log("currency>>>> ",res);
+                        if (res.result) {
+                            $('.w_t_symbol').text(res.result);
+                            that.t_symbol = res.result;
+                        } else {
+                            that.isToken = false;
+                        }
+                    });
+                }
+            });
+
+            that.execute(_contractAddress, 'name', [], function (res) {
+                if (res.result) {
+                    $('.w_t_name').text(res.result);
+                    that.t_name = res.result;
+                } else {
                     that.isToken = false;
                 }
             });
+
         } else {
             that.isToken = false;
         }
