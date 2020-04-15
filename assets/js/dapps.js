@@ -194,12 +194,12 @@ var DApps = {
             "state": 1
         },
         {
-            img: "https://fpsc2019.gitee.io/fpsc-pullup/logo.png",
+            img: "https://fpsc2020.gitee.io/fpsc-pullup/logo.png",
             title: "HAPY",
             desc: "HAPY는 해피쉐어링 플랫폼내에서 사용할 수 있는 토큰으로서 물품을 구매하거나 투자 상품에 참여하기 위해서 필요한 암호화폐입니다.\n" +
                 "해피쉐어링은 글로벌 공유 커뮤니티입니다. 현재 일본을 주축으로 이미 10만명 규모의 유저들이 활동 중이며 더 많은 유저를 확보하기 위해 중국 베트남 등 글로벌 시장 진출을 준비하고 있습니다.",
             author: "HAPY",
-            url: "https://fpsc2019.gitee.io/fpsc-pullup/",
+            url: "https://fpsc2020.gitee.io/fpsc-pullup/",
             showTips: true,
             state: 1,
         }
