@@ -378,6 +378,7 @@ var Transaction = {
                     }
                     Common.postAsync('tx/transfer', biz, {}, function (res) {
                         if (res.base.code === 'SUCCESS') {
+                            $("#password").val('');
                             $('.toast:eq(1) div:eq(0)').removeClass('alert-danger').addClass('alert-success').text($.i18n.prop('send_tx_success'));
                             $('.toast:eq(1)').toast('show')
                             setTimeout(function () {
@@ -388,8 +389,8 @@ var Transaction = {
                             $('.toast:eq(1) div:eq(0)').text(Common.convertErrors(res.base.desc));
                             $('.toast:eq(1)').toast('show')
                             $('.modal-footer button:eq(1)').attr('disabled', false).text($.i18n.prop('send_tx_confirm'));
+                            $('#sub1').attr('disabled', false);
                         }
-                        $('#sub1').attr('disabled', false);
                     });
                 }
             }

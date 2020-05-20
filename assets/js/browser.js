@@ -1,3 +1,5 @@
+import {config, lang} from "../../../popup/src/config/common";
+
 var operation = {
 
     method: {
@@ -8,7 +10,8 @@ var operation = {
         call: "call",
         estimateGas: "estimateGas",
         encrypt: "encrypt",
-        decrypt: "decrypt"
+        decrypt: "decrypt",
+        getInfo:"getInfo"
     }
 
 };
@@ -64,6 +67,9 @@ var Browser = {
                             msg.error = error;
                             that.sendMessage(msg);
                         })
+                    } else if (msg.method === operation.method.getInfo) {
+                        msg.data = that.getInfo();
+                        that.sendMessage(msg);
                     } else {
                         that.sendMessage("operation method is invalid !");
                     }
@@ -160,6 +166,13 @@ var Browser = {
         } catch (e) {
             alert(e.message);
         }
+    },
+
+    getInfo :function() {
+        let data = {};
+        data.language = $.cookie('language');
+        data.rpc = $.cookie('seroRpcHost');
+        return data
     },
 
     call: function (data, cb) {
