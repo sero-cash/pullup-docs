@@ -1,5 +1,3 @@
-import {config, lang} from "../../../popup/src/config/common";
-
 var operation = {
 
     method: {

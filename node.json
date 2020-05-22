@@ -3,7 +3,7 @@
     "id": "1",
     "network": "main",
     "name": "Global",
-    "rpc": "http://f-sero-light-node.ririniannian.com:8545",
+    "rpc": "https://f-sero-light-node.ririniannian.com",
     "web": "http://pullup.sero.cash/v0_1_6/"
   },
   "host": [
@@ -11,14 +11,14 @@
       "id": "1",
       "network": "main",
       "name": "Global",
-      "rpc": "http://f-sero-light-node.ririniannian.com:8545",
+      "rpc": "https://f-sero-light-node.ririniannian.com",
       "web": "http://pullup.sero.cash/v0_1_6/"
     },
     {
       "id": "2",
       "network": "main",
       "name": "China Mainland",
-      "rpc": "http://sero-light-node.ririniannian.com:8545",
+      "rpc": "https://sero-light-node.ririniannian.com",
       "web": "http://pullup.sero.cash/v0_1_6/"
     }
   ]

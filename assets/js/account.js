@@ -275,7 +275,7 @@ var Detail = {
                     }
                 }
 
-                if(ticketsObj){
+                if(Object.keys(ticketsObj).length>0){
                     $('.tickets').empty().append(`
                         <div class="d-sm-flex justify-content-between align-items-center mb-4">
                             <h3 class="text-dark mb-0">Tickets</h3>

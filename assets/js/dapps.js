@@ -360,14 +360,55 @@ var DApps = {
             var dappName = $(this).attr('dapp-name');
             var dappUrl = $(this).attr('dapp-url');
             var bodyp = $.i18n.prop('dapps_modal_body');
-            $('#myModal p').text(bodyp.replace(/GGGGG/g, dappName));
+            var item = $.i18n.prop('dapps_modal_item');
+            var itemUrl = '';
+            var lang_code = $.cookie('language');
+            if ('zh_CN' === lang_code) {
+                itemUrl = 'https://sero.cash/app/disclaimer/index-zh.html';
+            }else{
+                itemUrl = 'https://sero.cash/app/disclaimer/index-en.html';
+            }
+            $('#myModal p:eq(0)').empty().append(bodyp.replace(/GGGGG/g, `<a href="${itemUrl}" target="_blank">${item}</a>`));
 
-            $('.dapp-name').text(dappName);
+            $('#myModal p:eq(1)').empty().append(`
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" onchange="DApps.setRead('${dappName}')">
+                  <label class="form-check-label" for="defaultCheck1">
+                    ${$.i18n.prop('dapps_modal_read')}
+                  </label>
+                </div>
+            `);
+            // $('.dapp-name').text(dappName);
             $('#myModal').modal('show');
             $('.modal-footer button:eq(1)').unbind('click').bind('click', function () {
                 that.goBrowser(dappUrl);
             });
+
+            setTimeout(function () {
+                var read = localStorage.getItem(that.dappReadKey(dappName));
+                if(!read || read==="false"){
+                    document.getElementById("defaultCheck1").checked = false;
+                    $('#myModal .modal-footer button:eq(1)').attr('disabled',true);
+                }else{
+                    document.getElementById("defaultCheck1").checked = true;
+                    $('#myModal .modal-footer button:eq(1)').attr('disabled',false);
+                }
+            },100)
         });
 
+    },
+
+    setRead(name){
+        var checked = document.getElementById("defaultCheck1").checked;
+        localStorage.setItem(this.dappReadKey(name),checked);
+        if(checked){
+            $('#myModal .modal-footer button:eq(1)').attr('disabled',false);
+        }else {
+            $('#myModal .modal-footer button:eq(1)').attr('disabled',true);
+        }
+    },
+
+    dappReadKey(name){
+        return "dapp:read:"+name;
     }
 }
