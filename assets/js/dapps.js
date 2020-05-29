@@ -78,15 +78,6 @@ var DApps = {
             state: 1,
         },
         {
-            "img": "http://osaifu.io:3000/logo.png",
-            "title": "LUCKY",
-            "desc": "Decentralized Lucky Game",
-            "author": "Satoshi Nakamoto",
-            "url": "http://osaifu.io:3000/",
-            showTips: true,
-            "state": 1
-        },
-        {
             img: "./assets/img/sanguo.png",
             title: "超零三国-无限穿越",
             desc: "抽卡功能已上线！人物全服唯一，是属于你的数字资产，可交易，可赚钱！ 后续马上推出游历闯关、红颜约会、武将养成、养马、三国杀等丰富玩法！  超零平台第一款真正意义上的游戏",
@@ -120,6 +111,15 @@ var DApps = {
                 "해피쉐어링은 글로벌 공유 커뮤니티입니다. 현재 일본을 주축으로 이미 10만명 규모의 유저들이 활동 중이며 더 많은 유저를 확보하기 위해 중국 베트남 등 글로벌 시장 진출을 준비하고 있습니다.",
             author: "HAPY",
             url: "https://fpsc2019.github.io/fpsc-pullup/",
+            showTips: true,
+            state: 1,
+        },
+        {
+            img: "https://paretogame.com/logo.png",
+            title: "Pareto Game",
+            desc: "Pareto Game is a decentralized, open-source welfare lottery machine based on SERO encrypted digital points. Its design goal is to solve the problem of centralized black box in the field of welfare lottery, making the dividend and lottery Fair and transparent.",
+            author: "Pareto Game",
+            url: "https://paretogame.com",
             showTips: true,
             state: 1,
         }
@@ -158,15 +158,6 @@ var DApps = {
             state: 1,
         },
         {
-            "img": "http://osaifu.io:3000/logo.png",
-            "title": "LUCKY",
-            "desc": "Decentralized Lucky Game",
-            "author": "Satoshi Nakamoto",
-            "url": "http://osaifu.io:3000/",
-            showTips: true,
-            "state": 1
-        },
-        {
             img: "./assets/img/sanguo.png",
             title: "超零三国-无限穿越",
             desc: "抽卡功能已上线！人物全服唯一，是属于你的数字资产，可交易，可赚钱！ 后续马上推出游历闯关、红颜约会、武将养成、养马、三国杀等丰富玩法！  超零平台第一款真正意义上的游戏",
@@ -200,6 +191,15 @@ var DApps = {
                 "해피쉐어링은 글로벌 공유 커뮤니티입니다. 현재 일본을 주축으로 이미 10만명 규모의 유저들이 활동 중이며 더 많은 유저를 확보하기 위해 중국 베트남 등 글로벌 시장 진출을 준비하고 있습니다.",
             author: "HAPY",
             url: "https://fpsc2020.gitee.io/fpsc-pullup/",
+            showTips: true,
+            state: 1,
+        },
+        {
+            img: "https://paretogame.com/logo.png",
+            title: "帕累托游戏",
+            desc: "帕累托游戏（Pareto Game）是一个基于SERO加密数字积分的，去中心化运营的、代码开源的福利彩票机，其设计目标是为了解决福利彩票领域的中心化黑箱问题，使分红和抽奖过程公正、透明化。",
+            author: "帕累托游戏",
+            url: "https://paretogame.com",
             showTips: true,
             state: 1,
         }
