@@ -115,11 +115,11 @@ var DApps = {
             state: 1,
         },
         {
-            img: "https://paretogame.com/logo.png",
+            img: "https://sero.paretogame.com/logo.png",
             title: "Pareto Game",
             desc: "Pareto Game is a decentralized, open-source welfare lottery machine based on SERO encrypted digital points. Its design goal is to solve the problem of centralized black box in the field of welfare lottery, making the dividend and lottery Fair and transparent.",
             author: "Pareto Game",
-            url: "https://paretogame.com",
+            url: "https://sero.paretogame.com",
             showTips: true,
             state: 1,
         }
@@ -195,11 +195,11 @@ var DApps = {
             state: 1,
         },
         {
-            img: "https://paretogame.com/logo.png",
+            img: "https://sero.paretogame.com/logo.png",
             title: "帕累托游戏",
             desc: "帕累托游戏（Pareto Game）是一个基于SERO加密数字积分的，去中心化运营的、代码开源的福利彩票机，其设计目标是为了解决福利彩票领域的中心化黑箱问题，使分红和抽奖过程公正、透明化。",
             author: "帕累托游戏",
-            url: "https://paretogame.com",
+            url: "https://sero.paretogame.com",
             showTips: true,
             state: 1,
         }
