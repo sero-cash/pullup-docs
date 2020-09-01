@@ -61,10 +61,7 @@ var Index = {
 
             $('.list-group').append(`<li class="list-group-item" network="personal" netname="Personal Network" >
                 <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon3">http://</span>
-                </div>
-                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" placeholder="127.0.0.1:8545">
+                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" placeholder="http://127.0.0.1:8545">
                 </div>
                 <button class="btn btn-outline-primary btn-block addNetwork">Set Personal RPC</button>
             </li>`);

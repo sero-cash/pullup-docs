@@ -120,12 +120,32 @@ var Browser = {
         })
     },
 
-    getAccountList: function (cb) {
+    getAccountList: function (useMap,cb) {
         try {
             Common.post("account/list", {}, {}, function (res) {
                 if (res.base.code === 'SUCCESS') {
                     if (cb) {
-                        cb(res.biz)
+                        if(useMap && useMap===true){
+                            if(res.biz && res.biz.length>0){
+                                var data = res.biza.map(function(v,i){
+                                    var Balance = v.Balance;
+                                    var keys = Object.keys(Balance);
+                                    var dataMap = new Map();
+                                    for(var i=0;i<keys.length;i++){
+                                        var key = keys[i];
+                                        var value = Balance[key];
+                                        dataMap.set(key,value)
+                                    }
+                                    v.Balance = dataMap;
+                                    return v;
+                                })
+                                cb(data);
+                            }else{
+                                cb(res.biz)
+                            }
+                        }else{
+                            cb(res.biz)
+                        }
                     }
                 }
             });

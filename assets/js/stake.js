@@ -362,10 +362,42 @@ var StakeHome = {
         $('tbody').empty();
 
         Common.post('stake', {}, {}, function (res) {
+
+            function compareLatestPay(a,b) {
+                return b.lastPayTime - a.lastPayTime;
+            }
+
+            function compareMiss(a,b) {
+                return a.wishVoteNum / (a.choicedNum - a.missedNum) - b.wishVoteNum / (b.choicedNum - b.missedNum);
+            }
+
             if (res.base.code === 'SUCCESS') {
                 var lan = $.cookie('language')?$.cookie('language'):"en_US";
                 var _stakeName = that.stakeName[lan];
                 var dataArray = res.biz;
+
+                var closeArr = [];
+                var missArr = [];
+                var normalArr = [];
+                for (var data of dataArray) {
+                    if((data.choicedNum - data.missedNum>0)&&(data.wishVoteNum / (data.choicedNum - data.missedNum) > 0)){
+                        missArr.push(data);
+                    } else if(data.closed){
+                        closeArr.push(data);
+                    } else{
+                        normalArr.push(data);
+                    }
+                }
+
+                normalArr.sort(compareLatestPay);
+                missArr.sort(compareMiss);
+
+                dataArray = normalArr;
+
+                dataArray = normalArr.concat(missArr)
+
+                dataArray = dataArray.concat(closeArr);
+
                 for (var data of dataArray) {
 
                     var isMy = `<span class="text-primary">${that.account[data.idPkr]?"Created by: "+that.account[data.idPkr]:""}</span><br/>`;
@@ -421,7 +453,9 @@ var StakeHome = {
                     </tr>
                `);
                 }
-                $('#dataTable').DataTable();
+                $('#dataTable').DataTable({
+                    "ordering": false,
+                });
             }
         });
     },
@@ -430,6 +464,7 @@ var StakeHome = {
 
 
 };
+
 
 var StakeRegister = {
 
