@@ -91,7 +91,7 @@ var Index = {
                     if ('/' === (network.substring(network.length - 1))) {
                         network = network.substring(network.length - 1);
                     }
-                    network = "http://" + network;
+                    network = network;
                     Common.post('network/change', network, {}, function (res) {
                         if (res.base.code === 'SUCCESS') {
                             // $.cookie('networkName', network);
