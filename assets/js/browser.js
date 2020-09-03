@@ -120,14 +120,14 @@ var Browser = {
         })
     },
 
-    getAccountList: function (useMap,cb) {
+    getAccountList: function (cb,useMap) {
         try {
             Common.post("account/list", {}, {}, function (res) {
                 if (res.base.code === 'SUCCESS') {
                     if (cb) {
                         if(useMap && useMap===true){
                             if(res.biz && res.biz.length>0){
-                                var data = res.biza.map(function(v,i){
+                                var data = res.biz.map(function(v,i){
                                     var Balance = v.Balance;
                                     var keys = Object.keys(Balance);
                                     var dataMap = new Map();
