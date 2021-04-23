@@ -164,7 +164,7 @@ var Transaction = {
                     var value_arr = ticketsObj[catalog];
                     var valueH = ``;
                     for(var k= 0;k<value_arr.length;k++){
-                        valueH += `<option value='${catalog+'_'+k}'>${value_arr[k]}</option>`
+                        valueH += `<option value='${catalog+'$'+k}'>${value_arr[k]}</option>`
                     }
                     $('#tickets').append(`
                         <optgroup label='${catalog}'>
@@ -257,7 +257,7 @@ var Transaction = {
                                 var value_arr = ticketsObj[catalog];
                                 var valueH = '';
                                 for(var k= 0;k<value_arr.length;k++){
-                                    valueH += `<option value='${catalog+'_'+k}'>${value_arr[k]}</option>`
+                                    valueH += `<option value='${catalog+'$'+k}'>${value_arr[k]}</option>`
                                 }
                                 $('#tickets').append(`
                                     <optgroup label='${catalog}'>
@@ -372,7 +372,7 @@ var Transaction = {
                     if(ticketCatalog){
                         var ticketValue = $("#tickets").find("option:selected").text();
                         biz.tkt={
-                            catalog:ticketCatalog.split("_")[0],
+                            catalog:ticketCatalog.split("$")[0],
                             value:ticketValue,
                         }
                     }
