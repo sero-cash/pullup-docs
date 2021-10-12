@@ -119,8 +119,8 @@ var Detail = {
                 $('.network').text($.i18n.prop('home_account_network'));
                 $('.addAcount').text($.i18n.prop('home_account_add'));
                 $('.exportPhrase').text($.i18n.prop('account_export_mnemnic'));
-                $('.modal-footer button:eq(0)').text($.i18n.prop('send_tx_cancel'));
-                $('.modal-footer button:eq(1)').text($.i18n.prop('send_tx_confirm'));
+                $('#myModal .modal-footer button:eq(0)').text($.i18n.prop('send_tx_cancel'));
+                $('#myModal .modal-footer button:eq(1)').text($.i18n.prop('send_tx_confirm'));
             }
         });
     },
@@ -131,7 +131,7 @@ var Detail = {
         that.getAccountDetail();
         that.getTxList();
 
-        $('.toast').toast({animation: true, autohide: true, delay: 1000})
+        $('.toast').toast({animation: true, autohide: true, delay: 3000})
         var clipboard1 = new ClipboardJS('.fa-copy');
         clipboard1.on('success', function (e) {
             $('#toast1 div:eq(0)').text('Copy successfully!');
@@ -140,6 +140,8 @@ var Detail = {
 
 
         that.bindExport();
+
+        that.bindAddOut();
 
         setInterval(function () {
             that.getAccountDetail();
@@ -178,6 +180,44 @@ var Detail = {
         });
     },
 
+    bindAddOut: function (){
+        var that = this;
+        $('.addOutBtn').unbind().bind('click',function (){
+            $('#myModal2').modal('show');
+
+        })
+
+        $('#myModal2 .modal-footer button:eq(1)').unbind().bind('click', function () {
+            that.addOut()
+        })
+
+    },
+
+    addOut:function () {
+        var that = this;
+        var txHash = $('#txHash').val();
+        if(txHash){
+            var biz = {
+                from: that.address,
+                tx_hash: txHash
+            }
+            Common.post('tx/addOut', biz,  {},function (res) {
+                if (res.base.code === "SUCCESS") {
+                    $('#toast1 div:eq(0)').text('Add Successfully, Please wait for sync account !');
+                    $('#toast1').toast('show')
+                    $('#myModal2').modal('hide');
+                }else{
+                    $('#toast1 div:eq(0)').removeClass('alert-success').addClass('alert-danger');
+                    $('#toast1 div:eq(0)').text(res.base.desc);
+                    $('#toast1').toast('show')
+                    setTimeout(function (){
+                        $('#toast1 div:eq(0)').removeClass('alert-danger').addClass('alert-success');
+                    },6000)
+                }
+            });
+        }
+    },
+
     getAccountDetail: function () {
 
         var that = this;
@@ -203,35 +243,34 @@ var Detail = {
                 $('.address').text(pkr);
                 $('.main-address').text(res.biz.MainPKr);
 
-
                 $('.mainqrcode').unbind().bind('click', function () {
-                    $('.modal-title').empty().text("Qrcode");
-                    $('.modal-body div:eq(1)').empty().text(res.biz.MainPKr);
+                    $('#myModal .modal-title').empty().text("Qrcode");
+                    $('#myModal .modal-body div:eq(1)').empty().text(res.biz.MainPKr);
                     $('#qrcode').empty().qrcode({
                         render: "canvas",
                         width: 200,
                         height: 200,
                         text: res.biz.MainPKr
                     });
-                    $('.modal-footer button:eq(1)').bind('click', function () {
+                    $('#myModal .modal-footer button:eq(1)').bind('click', function () {
                         $('#myModal').modal('hide');
-                        $('.modal-footer button:eq(1)').unbind('click');
+                        $('#myModal .modal-footer button:eq(1)').unbind('click');
                     })
                     $('#myModal').modal({backdrop: 'static', keyboard: false});
                 });
 
                 $('.secondqrcode').unbind().bind('click', function () {
-                    $('.modal-title').empty().text("Qrcode");
-                    $('.modal-body div:eq(1)').empty().text(pkr);
+                    $('#myModal .modal-title').empty().text("Qrcode");
+                    $('#myModal .modal-body div:eq(1)').empty().text(pkr);
                     $('#qrcode').empty().qrcode({
                         render: "canvas",
                         width: 200,
                         height: 200,
                         text: pkr
                     });
-                    $('.modal-footer button:eq(1)').bind('click', function () {
+                    $('#myModal .modal-footer button:eq(1)').bind('click', function () {
                         $('#myModal').modal('hide');
-                        $('.modal-footer button:eq(1)').unbind('click');
+                        $('#myModal .modal-footer button:eq(1)').unbind('click');
                     })
                     $('#myModal').modal('show');
                 });

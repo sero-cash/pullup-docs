@@ -60,7 +60,7 @@
                         </div>
                     </div>
                     <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                        <h3 class="text-dark mb-0">Balance</h3>
+                        <h3 class="text-dark mb-0">Balance</h3> <div class="btn btn-outline-primary addOutBtn">Sync Tx By Hash</div>
                     </div>
                     <div class="row currency">
                     </div>
@@ -139,6 +139,43 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLongTitle2">Add Tx By Hash</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="toast" style="position: absolute;z-index: 99999; left: 50%;top: 5%;transform: translate(-50%, -50%);" id="toast2">
+                        <div class="toast-body alert-danger">
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-lg-12"><input type="text" autofocus class="form-control" placeholder="Please input Tx Hash" id="txHash" autocomplete="off" required/></div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-lg-12 text-break text-warning small">
+                                    This function is used to repair the data of known transactions, and only supports importing transactions belonging to the account
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="assets/plugin/bootstrap.bundle.min.js"></script>
     <script src="assets/plugin/jquery.min.js"></script>
@@ -151,7 +188,8 @@
     <script src="assets/plugin/clipboard.min.js"></script>
     <script src="assets/plugin/bignumber.js"></script>
     <script src="assets/js/common.js"></script>
-    <script src="assets/js/account.js"></script>
+    <script src="assets/js/account.js?V1"></script>
+
     <script>
 
         $('.header').load('header.html');
