@@ -35,8 +35,8 @@ var Common = {
     },
 
     checkVersion :function(){
-        var forceUpdateVersions = ["v0.1.13","v0.1.14"];
-        var latestVersion = "v0.1.15";
+        var forceUpdateVersions = ["v0.1.13","v0.1.14","v0.1.15","v0.1.16"];
+        var latestVersion = "v0.1.18";
         var that = this;
         $.ajax({
             url: that.host + '/version',
