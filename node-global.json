@@ -3,7 +3,7 @@
     "id": "1",
     "network": "main",
     "name": "Global",
-    "rpc": "https://f-light-node.sero.cash",
+    "rpc": "https://f-light.seronode.io",
     "web": "https://pullup.sero.cash"
   },
   "host": [
@@ -11,14 +11,14 @@
       "id": "1",
       "network": "main",
       "name": "Global",
-      "rpc": "https://f-light-node.sero.cash",
+      "rpc": "https://f-light.seronode.io",
       "web": "https://pullup.sero.cash"
     },
     {
       "id": "2",
       "network": "main",
-      "name": "China Mainland",
-      "rpc": "https://light-node.sero.cash",
+      "name": "Asia Region",
+      "rpc": "https://light.seronode.io",
       "web": "https://pullup.sero.cash"
     }
   ]

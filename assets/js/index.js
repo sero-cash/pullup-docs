@@ -25,16 +25,16 @@ var Index = {
         Common.post('network/change', "", {}, function (res) {
             if (res.base.code === 'SUCCESS') {
 
-                if(res.biz === "https://light-node.ririniannian.com" ){
-                    Common.post('network/change', "https://light-node.sero.cash", {}, function (res) {
+                if(res.biz === "https://sero-light-node.ririniannian.com" || res.biz === "https://light-node.sero.cash" ){
+                    Common.post('network/change', "https://light.seronode.io", {}, function (res) {
                         if (res.base.code === 'SUCCESS') {
                             $.cookie('networkUrl', res.biz);
                             $.cookie('seroRpcHost',res.biz);
                             $('.select-net span').text(res.biz);
                         }
                     });
-                }else if(res.biz === "https://f-light-node.ririniannian.com" ){
-                    Common.post('network/change', "https://f-light-node.sero.cash", {}, function (res) {
+                }else if(res.biz === "https://f-sero-light-node.ririniannian.com" || res.biz === "https://f-light-node.sero.cash" ){
+                    Common.post('network/change', "https://f-light.seronode.io", {}, function (res) {
                         if (res.base.code === 'SUCCESS') {
                             $.cookie('networkUrl', res.biz);
                             $.cookie('seroRpcHost',res.biz);
